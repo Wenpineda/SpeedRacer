@@ -1,0 +1,371 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SPEED_RACERModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="id_Cliente" />
+          </Key>
+          <Property Name="id_Cliente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombres" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="apellidos" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="departamento" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="direccion" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="telefono" Type="int" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="detalle_factura">
+          <Key>
+            <PropertyRef Name="idDetalle_venta" />
+          </Key>
+          <Property Name="idDetalle_venta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idVenta" Type="int" Nullable="false" />
+          <Property Name="idArticulo" Type="int" Nullable="false" />
+          <Property Name="idPersona" Type="int" Nullable="false" />
+          <Property Name="cantidad" Type="int" Nullable="false" />
+          <Property Name="precio" Type="decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="descuento" Type="decimal" Precision="11" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Vehiculo">
+          <Key>
+            <PropertyRef Name="IdVehiculo" />
+          </Key>
+          <Property Name="IdVehiculo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Marca" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="modelo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="color" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NumSerial" Type="int" Nullable="false" />
+          <Property Name="precio_venta" Type="money" />
+          <Property Name="stock" Type="int" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="Venta">
+          <Key>
+            <PropertyRef Name="idVenta" />
+          </Key>
+          <Property Name="idVenta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idCliente" Type="int" Nullable="false" />
+          <Property Name="num_comprobante" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="fecha_hora" Type="datetime" />
+          <Property Name="impuesto" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="total" Type="decimal" Precision="11" Scale="2" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__detalle_f__idArt__2D27B809">
+          <End Role="Vehiculo" Type="Self.Vehiculo" Multiplicity="1" />
+          <End Role="detalle_factura" Type="Self.detalle_factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehiculo">
+              <PropertyRef Name="IdVehiculo" />
+            </Principal>
+            <Dependent Role="detalle_factura">
+              <PropertyRef Name="idArticulo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__detalle_f__idPer__2E1BDC42">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="detalle_factura" Type="Self.detalle_factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="id_Cliente" />
+            </Principal>
+            <Dependent Role="detalle_factura">
+              <PropertyRef Name="idPersona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__detalle_f__idVen__2C3393D0">
+          <End Role="Venta" Type="Self.Venta" Multiplicity="1" />
+          <End Role="detalle_factura" Type="Self.detalle_factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Venta">
+              <PropertyRef Name="idVenta" />
+            </Principal>
+            <Dependent Role="detalle_factura">
+              <PropertyRef Name="idVenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta__idCliente__29572725">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Venta" Type="Self.Venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="id_Cliente" />
+            </Principal>
+            <Dependent Role="Venta">
+              <PropertyRef Name="idCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SPEED_RACERModelStoreContainer">
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="detalle_factura" EntityType="Self.detalle_factura" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vehiculo" EntityType="Self.Vehiculo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Venta" EntityType="Self.Venta" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__detalle_f__idArt__2D27B809" Association="Self.FK__detalle_f__idArt__2D27B809">
+            <End Role="Vehiculo" EntitySet="Vehiculo" />
+            <End Role="detalle_factura" EntitySet="detalle_factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK__detalle_f__idPer__2E1BDC42" Association="Self.FK__detalle_f__idPer__2E1BDC42">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="detalle_factura" EntitySet="detalle_factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK__detalle_f__idVen__2C3393D0" Association="Self.FK__detalle_f__idVen__2C3393D0">
+            <End Role="Venta" EntitySet="Venta" />
+            <End Role="detalle_factura" EntitySet="detalle_factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta__idCliente__29572725" Association="Self.FK__Venta__idCliente__29572725">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Venta" EntitySet="Venta" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SPEED_RACERModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="id_Cliente" />
+          </Key>
+          <Property Name="id_Cliente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombres" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="apellidos" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="departamento" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="direccion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="telefono" Type="Int32" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="detalle_factura" Relationship="Self.FK__detalle_f__idPer__2E1BDC42" FromRole="Cliente" ToRole="detalle_factura" />
+          <NavigationProperty Name="Venta" Relationship="Self.FK__Venta__idCliente__29572725" FromRole="Cliente" ToRole="Venta" />
+        </EntityType>
+        <EntityType Name="detalle_factura">
+          <Key>
+            <PropertyRef Name="idDetalle_venta" />
+          </Key>
+          <Property Name="idDetalle_venta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idVenta" Type="Int32" Nullable="false" />
+          <Property Name="idArticulo" Type="Int32" Nullable="false" />
+          <Property Name="idPersona" Type="Int32" Nullable="false" />
+          <Property Name="cantidad" Type="Int32" Nullable="false" />
+          <Property Name="precio" Type="Decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="descuento" Type="Decimal" Precision="11" Scale="2" Nullable="false" />
+          <NavigationProperty Name="Cliente" Relationship="Self.FK__detalle_f__idPer__2E1BDC42" FromRole="detalle_factura" ToRole="Cliente" />
+          <NavigationProperty Name="Vehiculo" Relationship="Self.FK__detalle_f__idArt__2D27B809" FromRole="detalle_factura" ToRole="Vehiculo" />
+          <NavigationProperty Name="Venta" Relationship="Self.FK__detalle_f__idVen__2C3393D0" FromRole="detalle_factura" ToRole="Venta" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Vehiculo">
+          <Key>
+            <PropertyRef Name="IdVehiculo" />
+          </Key>
+          <Property Name="IdVehiculo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Marca" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="modelo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="color" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NumSerial" Type="Int32" Nullable="false" />
+          <Property Name="precio_venta" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="stock" Type="Int32" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="detalle_factura" Relationship="Self.FK__detalle_f__idArt__2D27B809" FromRole="Vehiculo" ToRole="detalle_factura" />
+        </EntityType>
+        <EntityType Name="Venta">
+          <Key>
+            <PropertyRef Name="idVenta" />
+          </Key>
+          <Property Name="idVenta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idCliente" Type="Int32" Nullable="false" />
+          <Property Name="num_comprobante" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="fecha_hora" Type="DateTime" Precision="3" />
+          <Property Name="impuesto" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="total" Type="Decimal" Precision="11" Scale="2" Nullable="false" />
+          <NavigationProperty Name="Cliente" Relationship="Self.FK__Venta__idCliente__29572725" FromRole="Venta" ToRole="Cliente" />
+          <NavigationProperty Name="detalle_factura" Relationship="Self.FK__detalle_f__idVen__2C3393D0" FromRole="Venta" ToRole="detalle_factura" />
+        </EntityType>
+        <Association Name="FK__detalle_f__idPer__2E1BDC42">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="detalle_factura" Type="Self.detalle_factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="id_Cliente" />
+            </Principal>
+            <Dependent Role="detalle_factura">
+              <PropertyRef Name="idPersona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta__idCliente__29572725">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Venta" Type="Self.Venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="id_Cliente" />
+            </Principal>
+            <Dependent Role="Venta">
+              <PropertyRef Name="idCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__detalle_f__idArt__2D27B809">
+          <End Role="Vehiculo" Type="Self.Vehiculo" Multiplicity="1" />
+          <End Role="detalle_factura" Type="Self.detalle_factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehiculo">
+              <PropertyRef Name="IdVehiculo" />
+            </Principal>
+            <Dependent Role="detalle_factura">
+              <PropertyRef Name="idArticulo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__detalle_f__idVen__2C3393D0">
+          <End Role="Venta" Type="Self.Venta" Multiplicity="1" />
+          <End Role="detalle_factura" Type="Self.detalle_factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Venta">
+              <PropertyRef Name="idVenta" />
+            </Principal>
+            <Dependent Role="detalle_factura">
+              <PropertyRef Name="idVenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SPEED_RACEREntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" />
+          <EntitySet Name="detalle_factura" EntityType="Self.detalle_factura" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Vehiculo" EntityType="Self.Vehiculo" />
+          <EntitySet Name="Venta" EntityType="Self.Venta" />
+          <AssociationSet Name="FK__detalle_f__idPer__2E1BDC42" Association="Self.FK__detalle_f__idPer__2E1BDC42">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="detalle_factura" EntitySet="detalle_factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta__idCliente__29572725" Association="Self.FK__Venta__idCliente__29572725">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Venta" EntitySet="Venta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__detalle_f__idArt__2D27B809" Association="Self.FK__detalle_f__idArt__2D27B809">
+            <End Role="Vehiculo" EntitySet="Vehiculo" />
+            <End Role="detalle_factura" EntitySet="detalle_factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK__detalle_f__idVen__2C3393D0" Association="Self.FK__detalle_f__idVen__2C3393D0">
+            <End Role="Venta" EntitySet="Venta" />
+            <End Role="detalle_factura" EntitySet="detalle_factura" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SPEED_RACERModelStoreContainer" CdmEntityContainer="SPEED_RACEREntities">
+          <EntitySetMapping Name="Cliente">
+            <EntityTypeMapping TypeName="SPEED_RACERModel.Cliente">
+              <MappingFragment StoreEntitySet="Cliente">
+                <ScalarProperty Name="id_Cliente" ColumnName="id_Cliente" />
+                <ScalarProperty Name="nombres" ColumnName="nombres" />
+                <ScalarProperty Name="apellidos" ColumnName="apellidos" />
+                <ScalarProperty Name="departamento" ColumnName="departamento" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="detalle_factura">
+            <EntityTypeMapping TypeName="SPEED_RACERModel.detalle_factura">
+              <MappingFragment StoreEntitySet="detalle_factura">
+                <ScalarProperty Name="idDetalle_venta" ColumnName="idDetalle_venta" />
+                <ScalarProperty Name="idVenta" ColumnName="idVenta" />
+                <ScalarProperty Name="idArticulo" ColumnName="idArticulo" />
+                <ScalarProperty Name="idPersona" ColumnName="idPersona" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+                <ScalarProperty Name="precio" ColumnName="precio" />
+                <ScalarProperty Name="descuento" ColumnName="descuento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="SPEED_RACERModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vehiculo">
+            <EntityTypeMapping TypeName="SPEED_RACERModel.Vehiculo">
+              <MappingFragment StoreEntitySet="Vehiculo">
+                <ScalarProperty Name="IdVehiculo" ColumnName="IdVehiculo" />
+                <ScalarProperty Name="Marca" ColumnName="Marca" />
+                <ScalarProperty Name="modelo" ColumnName="modelo" />
+                <ScalarProperty Name="color" ColumnName="color" />
+                <ScalarProperty Name="NumSerial" ColumnName="NumSerial" />
+                <ScalarProperty Name="precio_venta" ColumnName="precio_venta" />
+                <ScalarProperty Name="stock" ColumnName="stock" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Venta">
+            <EntityTypeMapping TypeName="SPEED_RACERModel.Venta">
+              <MappingFragment StoreEntitySet="Venta">
+                <ScalarProperty Name="idVenta" ColumnName="idVenta" />
+                <ScalarProperty Name="idCliente" ColumnName="idCliente" />
+                <ScalarProperty Name="num_comprobante" ColumnName="num_comprobante" />
+                <ScalarProperty Name="fecha_hora" ColumnName="fecha_hora" />
+                <ScalarProperty Name="impuesto" ColumnName="impuesto" />
+                <ScalarProperty Name="total" ColumnName="total" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

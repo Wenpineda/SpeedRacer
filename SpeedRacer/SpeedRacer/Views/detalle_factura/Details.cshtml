@@ -1,0 +1,67 @@
+﻿@model SpeedRacer.Models.detalle_factura
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>detalle_factura</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.cantidad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cantidad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.precio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.precio)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.descuento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.descuento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Cliente.nombres)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cliente.nombres)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Vehiculo.Marca)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Vehiculo.Marca)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Venta.num_comprobante)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Venta.num_comprobante)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.idDetalle_venta }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

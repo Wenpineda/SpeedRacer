@@ -1,0 +1,58 @@
+﻿@model IEnumerable<SpeedRacer.Models.Venta>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.num_comprobante)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fecha_hora)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.impuesto)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.total)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cliente.nombres)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.num_comprobante)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fecha_hora)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.impuesto)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.total)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cliente.nombres)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.idVenta }) |
+            @Html.ActionLink("Details", "Details", new { id=item.idVenta }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.idVenta })
+        </td>
+    </tr>
+}
+
+</table>
